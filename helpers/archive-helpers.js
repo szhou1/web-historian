@@ -25,17 +25,107 @@ exports.initialize = function(pathsObj) {
 // The following function names are provided to you to suggest how you might
 // modularize your code. Keep it clean!
 
-exports.readListOfUrls = function() {
+exports.readListOfUrls = function(callback) {
+  fs.readFile(exports.paths.list, function(err, data) {
+    if (err) {
+      console.log(err);
+    }
+    // console.log(data.toString().split('\n'));
+    callback(data.toString().split('\n'));
+
+  });
 };
 
-exports.isUrlInList = function() {
+exports.isUrlInList = function(url, callback) {
+  
+  var exists = false;
+  exports.readListOfUrls(function(arrayOfUrls) {
+    console.log(arrayOfUrls);
+    arrayOfUrls.forEach(function(urlInList) {
+      if (!exists) {
+        // console.log(url, urlInList);
+        if (url === urlInList) {
+          console.log('found match!!!!');
+          exists = true;
+        }
+      }
+    });
+    // console.log(exists);
+    callback(exists);
+  });
+  return exists;
 };
 
-exports.addUrlToList = function() {
+exports.addUrlToList = function(url, callback) {
+
+  // var alreadyThere = exports.isUrlInList(url, function(x) {
+  //   return x;
+  // });
+
+  // console.log(alreadyThere);
+
+  exports.readListOfUrls(function(existingData) {
+    existingData.push(url);
+    // console.log('after push', existingData);
+    existingData = existingData.join('\n');
+    // console.log('after join by \n', existingData);
+    fs.writeFile(exports.paths.list, existingData, function(err) {
+      if (err) {
+        console.log(err);
+      }
+      callback();
+    });
+  });
 };
 
-exports.isUrlArchived = function() {
+exports.isUrlArchived = function(file, callback) {
+  var exists = false;
+  fs.readdir(exports.paths.archivedSites, function(err, files) {
+    if (err) {
+      console.log(err);
+    }
+
+    files.forEach(function(xfile) {
+      if (!exists) {
+        if (xfile === file) {
+          exists = true;
+        }
+      }
+    });
+    callback(exists);
+  });
+  return exists;
 };
 
-exports.downloadUrls = function() {
+exports.downloadUrls = function(urlArray) {
+
+  urlArray.forEach(function(url) {
+    var path = exports.paths.archivedSites + '/' + url;
+    console.log(path);
+    fs.writeFile(path, 'hello world', function(err) {
+      if (err) {
+        console.log(err);
+      }
+    });
+  });
+
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
