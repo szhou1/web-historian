@@ -6,7 +6,7 @@ var archive = require('../helpers/archive-helpers');
 
 // Why do you think we have this here?
 // HINT: It has to do with what's in .gitignore
-initialize('./archives');
+initialize('./web/archives');
 
 var port = 8080;
 var ip = '127.0.0.1';

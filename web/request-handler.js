@@ -34,17 +34,20 @@ exports.handleRequest = function (req, res) {
         // check if url is stored in cache
         archive.isUrlInList(site, function(exists) {
           console.log(site, exists);
+          if (!exists) {
+            archive.addUrlToList(site, function() {
+              // res.writeHead(302, httpHelpers.headers);
+              // res.end(); 
+              httpHelpers.serveLoadingPage(res);
+              console.log('successfully added url to list');
+            });
+          } else {
+            //serve up page
+            var asset = archive.paths.archivedSites + '/' + site;
+            httpHelpers.serveAssets(res, asset);
+          }
         });
-
-
-        archive.addUrlToList(site, function() {
-          res.writeHead(302, httpHelpers.headers);
-          
-          res.end(); 
-          console.log('successfully added url to list');
-
-
-        });
+        
       });
 
     }

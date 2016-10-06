@@ -29,6 +29,18 @@ exports.serveAssets = function(res, asset, callback) {
   // css, or anything that doesn't change often.)
 };
 
+exports.serveLoadingPage = function(res, callback) {
+  console.log('serve loading page');
+
+  var loadingPage = archive.paths.siteAssets + '/loading.html';
+  
+  fs.readFile(loadingPage, function(error, content) {
+    res.writeHead(302, this.headers);
+    res.end(content, 'utf-8');
+  });
+
+};
+
 exports.appendSite = function(res, asset, callback) {
   console.log('append site', asset);
   // check if site already exists in txt file
