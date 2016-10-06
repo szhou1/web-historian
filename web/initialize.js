@@ -20,4 +20,5 @@ module.exports = function (basePath) {
     // We use fs.mkdirSync to create the folder
     fs.mkdirSync(basePath + '/sites');
   }
+
 };

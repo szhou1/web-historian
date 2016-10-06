@@ -16,7 +16,7 @@ archive.initialize({
 var request = supertest.agent(server);
 
 describe('server', function() {
-  xdescribe('GET /', function () {
+  describe('GET /', function () {
     it('should return the content of index.html', function (done) {
       // just assume that if it contains an <input> tag its index.html
       request
@@ -26,7 +26,7 @@ describe('server', function() {
   });
 
   describe('archived websites', function () {
-    xdescribe('GET', function () {
+    describe('GET', function () {
       it('should return the content of a website from the archive', function (done) {
         var fixtureName = 'www.google.com';
         var fixturePath = archive.paths.archivedSites + '/' + fixtureName;
@@ -57,7 +57,7 @@ describe('server', function() {
         var url = 'www.example.com';
 
         var fileContents = fs.readFileSync('/Users/student/Codes/2016-09-web-historian/test/testdata/sites.txt', 'utf8');
-        console.log('file!!!!!!', fileContents);
+        // console.log('file!!!!!!', fileContents);
         // Reset the test file and process request
         fs.closeSync(fs.openSync(archive.paths.list, 'w'));
 
@@ -68,8 +68,8 @@ describe('server', function() {
           .expect(302, function (err) {
             if (!err) {
               var fileContents = fs.readFileSync(archive.paths.list, 'utf8');
-              console.log('path', archive.paths.list);
-              console.log('filecontents', fileContents.toString());
+              // console.log('path', archive.paths.list);
+              // console.log('filecontents', fileContents.toString());
               expect(fileContents).to.equal(url + '\n');
             }
 
@@ -80,7 +80,7 @@ describe('server', function() {
   });
 });
 
-xdescribe('archive helpers', function() {
+describe('archive helpers', function() {
   describe('#readListOfUrls', function () {
     it('should read urls from sites.txt', function (done) {
       var urlArray = ['example1.com', 'example2.com'];

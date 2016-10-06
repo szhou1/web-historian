@@ -31,13 +31,22 @@ exports.handleRequest = function (req, res) {
       req.on('data', function(data) {
         // console.log("i got some",data.toString().split('=')[1]);
         var site = data.toString().split('=')[1];
+        // check if url is stored in cache
+        archive.isUrlInList(site, function(exists) {
+          console.log(site, exists);
+        });
+
+
         archive.addUrlToList(site, function() {
+          res.writeHead(302, httpHelpers.headers);
+          
+          res.end(); 
           console.log('successfully added url to list');
+
+
         });
       });
 
-      res.writeHead(302, httpHelpers.headers);
-      res.end(); 
     }
   }
 
