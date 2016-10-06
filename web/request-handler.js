@@ -3,8 +3,7 @@ var http = require('http');
 var fs = require('fs');
 var archive = require('../helpers/archive-helpers');
 var httpHelpers = require('./http-helpers');
-// require more modules/folders here!
-
+var fetcher = require('../workers/htmlfetcher');
 
 exports.handleRequest = function (req, res) {
   console.log('request url', req.url);
@@ -15,7 +14,6 @@ exports.handleRequest = function (req, res) {
       var asset = archive.paths.siteAssets + '/index.html';
 
     } else if (req.url.substring(0, 4) === '/www') {
-      // console.log("ANOTHER WEBSITE");
       asset = archive.paths.archivedSites + req.url;
     } else {
       asset = archive.paths.siteAssets + req.url;
@@ -40,6 +38,17 @@ exports.handleRequest = function (req, res) {
               // res.end(); 
               httpHelpers.serveLoadingPage(res);
               console.log('successfully added url to list');
+              // auto fetch   
+              // fetcher.fetchHtml(site, function() {
+              //   archive.isUrlArchived(site, function(exists) {
+              //     console.log('checking isUrlArchived', site, exists);
+              //     if (exists) {
+              //       console.log(exists);
+              //       var asset = archive.paths.archivedSites + '/' + site;
+              //       httpHelpers.serveAssets(res, asset);
+              //     }
+              //   });
+              // });
             });
           } else {
             //serve up page

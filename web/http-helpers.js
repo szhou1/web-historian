@@ -19,6 +19,7 @@ exports.serveAssets = function(res, asset, callback) {
       res.writeHead(404, this.headers);
       res.end();
     } else {
+      console.log('Successfully read file', asset);
       res.writeHead(200, this.headers);
       res.end(content, 'utf-8');
     }
@@ -40,12 +41,3 @@ exports.serveLoadingPage = function(res, callback) {
   });
 
 };
-
-exports.appendSite = function(res, asset, callback) {
-  console.log('append site', asset);
-  // check if site already exists in txt file
-    // if exists, then do nothing and return
-    // if not then append and close
-};
-
-// As you progress, keep thinking about what helper functions you can put here!

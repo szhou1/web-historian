@@ -4,11 +4,11 @@ var fs = require('fs');
 // that are waiting.
 var helpers = require('../helpers/archive-helpers');
 
-exports.fetchHtml = function(url) {
+exports.fetchHtml = function(url, callback) {
   console.log('fetching!', url);
   var uri = 'http://' + url + '/';
   console.log('uri', uri);
-
+  var context = this;
   request(uri, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       var scrape = body;
@@ -17,6 +17,11 @@ exports.fetchHtml = function(url) {
       fs.writeFile(path, scrape, function(err) {
         if (err) {
           console.log('error writing file', err);
+        } else {
+          console.log('successfully fetched file', url);
+          if (callback) {
+            callback();
+          }
         }
       });
     } else {

@@ -30,7 +30,6 @@ exports.readListOfUrls = function(callback) {
     if (err) {
       console.log(err);
     }
-    // console.log(data.toString().split('\n'));
     callback(data.toString().split('\n'));
 
   });
@@ -57,7 +56,7 @@ exports.isUrlInList = function(url, callback) {
 };
 
 exports.addUrlToList = function(url, callback) {
-  
+
   fs.appendFile(exports.paths.list, url + '\n', function(err) {
     if (err) {
       console.log(err);
@@ -65,18 +64,6 @@ exports.addUrlToList = function(url, callback) {
     callback();
   });
 
-  // exports.readListOfUrls(function(existingData) {
-  //   existingData.push(url + '\n');
-  //   // console.log('after push', existingData);
-  //   existingData = existingData.join('\n');
-  //   // console.log('after join by \n', existingData);
-  //   fs.writeFile(exports.paths.list, existingData, function(err) {
-  //     if (err) {
-  //       console.log(err);
-  //     }
-  //     callback();
-  //   });
-  // });
 };
 
 exports.isUrlArchived = function(file, callback) {
@@ -90,10 +77,10 @@ exports.isUrlArchived = function(file, callback) {
       if (!exists) {
         if (xfile === file) {
           exists = true;
+          callback(exists);
         }
       }
     });
-    callback(exists);
   });
   return exists;
 };
