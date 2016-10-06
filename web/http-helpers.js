@@ -14,12 +14,11 @@ exports.serveAssets = function(res, asset, callback) {
   console.log('serve asset', asset);
 
   fs.readFile(asset, function(error, content) {
-    if(error) {
+    if (error) {
       console.log('ERROR'); 
       res.writeHead(404, this.headers);
       res.end();
-    }
-    else {
+    } else {
       res.writeHead(200, this.headers);
       res.end(content, 'utf-8');
     }

@@ -15,8 +15,8 @@ archive.initialize({
 
 var request = supertest.agent(server);
 
-xdescribe('server', function() {
-  describe('GET /', function () {
+describe('server', function() {
+  xdescribe('GET /', function () {
     it('should return the content of index.html', function (done) {
       // just assume that if it contains an <input> tag its index.html
       request
@@ -26,7 +26,7 @@ xdescribe('server', function() {
   });
 
   describe('archived websites', function () {
-    describe('GET', function () {
+    xdescribe('GET', function () {
       it('should return the content of a website from the archive', function (done) {
         var fixtureName = 'www.google.com';
         var fixturePath = archive.paths.archivedSites + '/' + fixtureName;
@@ -56,6 +56,8 @@ xdescribe('server', function() {
       it('should append submitted sites to \'sites.txt\'', function(done) {
         var url = 'www.example.com';
 
+        var fileContents = fs.readFileSync('/Users/student/Codes/2016-09-web-historian/test/testdata/sites.txt', 'utf8');
+        console.log('file!!!!!!', fileContents);
         // Reset the test file and process request
         fs.closeSync(fs.openSync(archive.paths.list, 'w'));
 
@@ -66,6 +68,8 @@ xdescribe('server', function() {
           .expect(302, function (err) {
             if (!err) {
               var fileContents = fs.readFileSync(archive.paths.list, 'utf8');
+              console.log('path', archive.paths.list);
+              console.log('filecontents', fileContents.toString());
               expect(fileContents).to.equal(url + '\n');
             }
 
@@ -76,7 +80,7 @@ xdescribe('server', function() {
   });
 });
 
-describe('archive helpers', function() {
+xdescribe('archive helpers', function() {
   describe('#readListOfUrls', function () {
     it('should read urls from sites.txt', function (done) {
       var urlArray = ['example1.com', 'example2.com'];
@@ -89,7 +93,7 @@ describe('archive helpers', function() {
     });
   });
 
-  xdescribe('#isUrlInList', function () {
+  describe('#isUrlInList', function () {
     it('should check if a url is in the list', function (done) {
       var urlArray = ['example1.com', 'example2.com'];
       fs.writeFileSync(archive.paths.list, urlArray.join('\n'));

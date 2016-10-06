@@ -40,12 +40,12 @@ exports.isUrlInList = function(url, callback) {
   
   var exists = false;
   exports.readListOfUrls(function(arrayOfUrls) {
-    console.log(arrayOfUrls);
+    //console.log(arrayOfUrls);
     arrayOfUrls.forEach(function(urlInList) {
       if (!exists) {
         // console.log(url, urlInList);
         if (url === urlInList) {
-          console.log('found match!!!!');
+          //console.log('found match!!!!');
           exists = true;
         }
       }
@@ -58,24 +58,25 @@ exports.isUrlInList = function(url, callback) {
 
 exports.addUrlToList = function(url, callback) {
 
-  // var alreadyThere = exports.isUrlInList(url, function(x) {
-  //   return x;
-  // });
-
-  // console.log(alreadyThere);
-
-  exports.readListOfUrls(function(existingData) {
-    existingData.push(url);
-    // console.log('after push', existingData);
-    existingData = existingData.join('\n');
-    // console.log('after join by \n', existingData);
-    fs.writeFile(exports.paths.list, existingData, function(err) {
-      if (err) {
-        console.log(err);
-      }
-      callback();
-    });
+  fs.appendFile(exports.paths.list, url + '\n', function(err) {
+    if (err) {
+      console.log(err);
+    }
+    callback();
   });
+
+  // exports.readListOfUrls(function(existingData) {
+  //   existingData.push(url + '\n');
+  //   // console.log('after push', existingData);
+  //   existingData = existingData.join('\n');
+  //   // console.log('after join by \n', existingData);
+  //   fs.writeFile(exports.paths.list, existingData, function(err) {
+  //     if (err) {
+  //       console.log(err);
+  //     }
+  //     callback();
+  //   });
+  // });
 };
 
 exports.isUrlArchived = function(file, callback) {
@@ -101,7 +102,7 @@ exports.downloadUrls = function(urlArray) {
 
   urlArray.forEach(function(url) {
     var path = exports.paths.archivedSites + '/' + url;
-    console.log(path);
+    //console.log(path);
     fs.writeFile(path, 'hello world', function(err) {
       if (err) {
         console.log(err);
@@ -110,13 +111,6 @@ exports.downloadUrls = function(urlArray) {
   });
 
 };
-
-
-
-
-
-
-
 
 
 

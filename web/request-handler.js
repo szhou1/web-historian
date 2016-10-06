@@ -9,16 +9,36 @@ var httpHelpers = require('./http-helpers');
 exports.handleRequest = function (req, res) {
   console.log('request url', req.url);
   // console.log(archive.paths.siteAssets + "/index.html");
-  if(req.url === "/"){
-    var asset = archive.paths.siteAssets + "/index.html";
+  if (req.method === 'GET') {
+    console.log('GET request');
+    if (req.url === '/') {
+      var asset = archive.paths.siteAssets + '/index.html';
 
-  } else if (req.url.substring(0,4) === "/www") {
-    // console.log("ANOTHER WEBSITE");
-    asset = archive.paths.archivedSites + req.url;
-  } else {
-    asset = archive.paths.siteAssets + req.url;
+    } else if (req.url.substring(0, 4) === '/www') {
+      // console.log("ANOTHER WEBSITE");
+      asset = archive.paths.archivedSites + req.url;
+    } else {
+      asset = archive.paths.siteAssets + req.url;
 
+    }
+    httpHelpers.serveAssets(res, asset);
+    
+  } else if (req.method === 'POST') {
+    console.log('POST request');
+
+    if (req.url === '/') {
+
+      req.on('data', function(data) {
+        // console.log("i got some",data.toString().split('=')[1]);
+        var site = data.toString().split('=')[1];
+        archive.addUrlToList(site, function() {
+          console.log('successfully added url to list');
+        });
+      });
+
+      res.writeHead(302, httpHelpers.headers);
+      res.end(); 
+    }
   }
-  httpHelpers.serveAssets(res, asset);
 
 };
